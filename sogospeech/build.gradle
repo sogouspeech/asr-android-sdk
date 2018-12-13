@@ -1,0 +1,124 @@
+apply plugin: 'com.android.library'
+apply plugin: 'com.google.protobuf'
+apply plugin: 'com.github.dcendents.android-maven'
+
+def getProductName() {
+    return "libSogoSpeech"
+}
+
+def getCodeVersion() {//打包时的代码版本，需要手动更改，格式是日期+时间（YYYYMMDDHHMM）,在gradle.properties里面修改
+    return PACKAGE_CODE_VERSION as String
+}
+
+android {
+    compileSdkVersion COMPILE_SDK_VERSION as int
+    defaultConfig {
+        minSdkVersion MIN_SDK_VERSION as int
+        targetSdkVersion TARGET_SDK_VERSION as int
+        versionCode VERSION_CODE as int//版本号，注意更新！在gradle.properties里面修改
+        versionName VERSION_NAME as String//版本名，建议更新,在gradle.properties里面修改
+
+    }
+
+    lintOptions {
+        abortOnError false
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+//            buildConfigField "boolean", "ENABLE_DEBUG", "false"
+        }
+    }
+    //配置打出来的aar包的名字
+//    android.libraryVariants.all { variant ->
+//        variant.outputs.all {
+//            def suffix = "" + variant.buildType.name
+////            def timestamp = System.currentTimeMillis()
+////            outputFileName = getProductName() + "_${defaultConfig.versionName}_" + suffix +"_${timestamp}_"+ '.aar'
+//            outputFileName = getProductName() + "_${defaultConfig.versionName}_" + suffix + "_${getCodeVersion()}" + '.aar'
+//        }
+//
+//    }
+    buildToolsVersion BUILD_TOOLS_VERSION as String
+
+    sourceSets {
+        main {
+            //配置.so文件调用
+            jni.srcDirs = []
+            jniLibs.srcDir 'libs'
+        }
+    }
+}
+
+allprojects {
+    repositories {
+        jcenter()
+        mavenCentral()
+        flatDir {
+            dirs 'libs'
+        }
+    }
+}
+
+protobuf {
+    protoc {
+        artifact = 'com.google.protobuf:protoc:3.4.0'
+    }
+    plugins {
+        javalite {
+            artifact = "com.google.protobuf:protoc-gen-javalite:3.0.0"
+        }
+        grpc {
+            artifact = 'io.grpc:protoc-gen-grpc-java:1.8.0' // CURRENT_GRPC_VERSION
+        }
+    }
+    generateProtoTasks {
+        all().each { task ->
+            task.plugins {
+                javalite {}
+                grpc {
+                    // Options added to --grpc_out
+                    option 'lite'
+                }
+            }
+        }
+    }
+}
+
+
+ext {
+    grpcVersion = '1.8.0'
+}
+
+//ref:https://developer.android.com/studio/build/dependencies
+//runtimeOnly能把引用的project打入本module的aar里面，但是会增加编译时间
+dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile 'com.android.support:appcompat-v7:23.+'
+    // gRPC
+    compile 'javax.annotation:javax.annotation-api:1.2'
+    compile("io.grpc:grpc-protobuf:${grpcVersion}") {
+        exclude module: 'jsr305'
+    }
+    compile("io.grpc:grpc-stub:${grpcVersion}") {
+        exclude module: 'jsr305'
+    }
+    compile("io.grpc:grpc-auth:${grpcVersion}") {
+        exclude module: 'jsr305'
+    }
+    compile("io.grpc:grpc-okhttp:${grpcVersion}") {
+        exclude module: 'jsr305'
+    }
+    // OAuth2 for Google API
+    compile('com.google.auth:google-auth-library-oauth2-http:0.9.0') {
+        exclude module: 'jsr305'
+        exclude module: 'httpclient'
+    }
+//    compile project(':sogocommon')
+//    compile 'org.conscrypt:conscrypt-android:1.2.0'
+    api 'com.github.sogouspeech:common-android-sdk:1.0.0'
+
+    api files('libs/conscrypt-1.4.0.jar')
+}
