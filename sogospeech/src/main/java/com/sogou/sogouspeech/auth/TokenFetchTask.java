@@ -32,6 +32,7 @@ public class TokenFetchTask {
     private Context context;
     private TokenFetchListener tokenFetchListener;
     private static long TIME_EXP = 8 * 60 * 60;
+    private String baseUrl;
 
     static {
         try {
@@ -42,9 +43,11 @@ public class TokenFetchTask {
     }
 
 
-    public TokenFetchTask(Context context, TokenFetchListener listener) {
+    public TokenFetchTask(Context context, String baseUrl, TokenFetchListener listener) {
         this.context = context;
         this.tokenFetchListener = listener;
+        this.baseUrl = baseUrl;
+
     }
 
     public void execute(Object object) {
@@ -73,7 +76,7 @@ public class TokenFetchTask {
                 .setAppkey(CommonSharedPreference.getInstance(context).getString("appkey",""))
                 .setUuid(CommonSharedPreference.getInstance(context).getString("uuid",""))
                 .buildPartial();
-        ManagedChannel channel = new OkHttpChannelProvider().builderForAddress(SogoSpeech.sBaseUrl, 443)
+        ManagedChannel channel = new OkHttpChannelProvider().builderForAddress(baseUrl, 443)
                 .negotiationType(NegotiationType.TLS)
                 .overrideAuthority(SogoSpeech.sBaseUrl + ":443")
                 .sslSocketFactory(HttpsUtil.getSSLSocketFactory(null, null, null))

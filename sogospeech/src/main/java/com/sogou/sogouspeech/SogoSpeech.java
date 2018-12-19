@@ -643,7 +643,7 @@ public class SogoSpeech implements InstructionsManager , VadDetectorCallback, Ev
         }else if(!TextUtils.isEmpty(info.appkey)) {
             CommonSharedPreference.getInstance(context).setString("appkey", info.appkey);
 
-            TokenFetchTask task = new TokenFetchTask(context, new TokenFetchTask.TokenFetchListener() {
+            TokenFetchTask task = new TokenFetchTask(context, sBaseUrl, new TokenFetchTask.TokenFetchListener() {
                 @Override
                 public void onTokenFetchSucc(String result) {
 

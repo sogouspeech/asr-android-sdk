@@ -62,30 +62,6 @@ allprojects {
     }
 }
 
-protobuf {
-    protoc {
-        artifact = 'com.google.protobuf:protoc:3.4.0'
-    }
-    plugins {
-        javalite {
-            artifact = "com.google.protobuf:protoc-gen-javalite:3.0.0"
-        }
-        grpc {
-            artifact = 'io.grpc:protoc-gen-grpc-java:1.8.0' // CURRENT_GRPC_VERSION
-        }
-    }
-    generateProtoTasks {
-        all().each { task ->
-            task.plugins {
-                javalite {}
-                grpc {
-                    // Options added to --grpc_out
-                    option 'lite'
-                }
-            }
-        }
-    }
-}
 
 
 ext {
@@ -95,7 +71,6 @@ ext {
 //ref:https://developer.android.com/studio/build/dependencies
 //runtimeOnly能把引用的project打入本module的aar里面，但是会增加编译时间
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
     compile 'com.android.support:appcompat-v7:23.+'
     // gRPC
     compile 'javax.annotation:javax.annotation-api:1.2'
@@ -118,7 +93,6 @@ dependencies {
     }
 //    compile project(':sogocommon')
 //    compile 'org.conscrypt:conscrypt-android:1.2.0'
-    api 'com.github.sogouspeech:common-android-sdk:1.0.0'
-
-    api files('libs/conscrypt-1.4.0.jar')
+    api 'com.github.sogouspeech:common-android-sdk:1.0.1'
+    api 'org.conscrypt:conscrypt-android:1.4.2'
 }
