@@ -78,7 +78,7 @@ public class TokenFetchTask {
                 .buildPartial();
         ManagedChannel channel = new OkHttpChannelProvider().builderForAddress(baseUrl, 443)
                 .negotiationType(NegotiationType.TLS)
-                .overrideAuthority(SogoSpeech.sBaseUrl + ":443")
+                .overrideAuthority(baseUrl + ":443")
                 .sslSocketFactory(HttpsUtil.getSSLSocketFactory(null, null, null))
                 .build();
         authGrpc.authStub client = authGrpc.newStub(channel);
