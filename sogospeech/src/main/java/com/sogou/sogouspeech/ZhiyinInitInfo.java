@@ -10,13 +10,15 @@ public class ZhiyinInitInfo {
     public String appid;
     public String appkey;
     public String token;
+    public long tokenExp;
 
-    private ZhiyinInitInfo(String baseUrl, String uuid, String appid, String appkey, String token) {
+    private ZhiyinInitInfo(String baseUrl, String uuid, String appid, String appkey, String token,long tokenExp) {
         this.baseUrl = baseUrl;
         this.uuid = uuid;
         this.appid = appid;
         this.appkey = appkey;
         this.token = token;
+        this.tokenExp = tokenExp;
     }
 
     public static class Builder{
@@ -25,9 +27,10 @@ public class ZhiyinInitInfo {
         private String appid;
         private String appkey;
         private String token;
+        private long tokenExp;
 
         public ZhiyinInitInfo create(){
-            ZhiyinInitInfo info = new ZhiyinInitInfo(baseUrl,uuid,appid,appkey,token);
+            ZhiyinInitInfo info = new ZhiyinInitInfo(baseUrl,uuid,appid,appkey,token,tokenExp);
             return info;
         }
 
@@ -57,7 +60,11 @@ public class ZhiyinInitInfo {
         public Builder setToken(String token) {
             this.token = token;
             return this;
+        }
 
+        public Builder setTokenExp(long tokenExp){
+            this.tokenExp = tokenExp;
+            return this;
         }
     }
 }

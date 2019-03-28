@@ -618,7 +618,19 @@ public class SogoSpeech implements InstructionsManager , VadDetectorCallback, Ev
 
     public static String sBaseUrl = "";
 
-    public static void initZhiyinInfo(Context context,ZhiyinInitInfo info){
+    public void setToken(String token){
+        CommonSharedPreference.getInstance(mContext).setString(CommonSharedPreference.TOKEN, token);
+    }
+
+    public void setTokenExp(long tokenExp){
+        CommonSharedPreference.getInstance(mContext).setLong(CommonSharedPreference.TIMEOUT_STAMP, tokenExp);
+    }
+
+    public static void initZhiyinInfo(Context context, ZhiyinInitInfo info) {
+        initZhiyinInfo(context,info,null);
+    }
+
+    public static void initZhiyinInfo(Context context, ZhiyinInitInfo info, final TokenFetchTask.TokenFetchListener listener){
         if (TextUtils.isEmpty(info.baseUrl)){
             throw new IllegalArgumentException("no baseUrl!");
 
@@ -646,11 +658,16 @@ public class SogoSpeech implements InstructionsManager , VadDetectorCallback, Ev
             TokenFetchTask task = new TokenFetchTask(context, sBaseUrl, new TokenFetchTask.TokenFetchListener() {
                 @Override
                 public void onTokenFetchSucc(String result) {
-
+                    if (listener != null){
+                        listener.onTokenFetchSucc(result);
+                    }
                 }
 
                 @Override
                 public void onTokenFetchFailed(String errMsg) {
+                    if (listener != null){
+                        listener.onTokenFetchFailed(errMsg);
+                    }
                 }
             });
             task.execute(null);
