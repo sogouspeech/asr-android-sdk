@@ -15,7 +15,7 @@ allprojects {
 implementation 'com.github.sogouspeech:common-android-sdk:1.0.1'
 ```
 ```
-implementation 'com.github.sogouspeech:asr-android-sdk:1.0.4'
+implementation 'com.github.sogouspeech:asr-android-sdk:1.0.5'
 ```
 
 使用方法请参考[搜狗知音文档](https://docs.zhiyin.sogou.com/docs/asr/sdk)
