@@ -409,6 +409,9 @@ public class SogoSpeech implements InstructionsManager , VadDetectorCallback, Ev
                     mRecognizer.stopListening();
                 } else { // 开启了vad,但没发现有效声音，没有开启过start，所以不需要stop
                     LogUtil.d("【停止】没检测到有效声音");
+                    if (mListener != null){
+                        handleEvent(SpeechConstants.Message.MSG_ASR_ONLINE_COMPLETED, "", null, 0, 0, null);
+                    }
                 }
             } else {
                 LogUtil.e("没有启用vad，或者使用了长时模式，停止识别");
