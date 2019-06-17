@@ -32,6 +32,8 @@ public class SogoSpeechSettings {
     // 识别服务相关参数
     public int audioCoding = 1; //音频格式，1.pcm格式。2.flac格式。100.speex格式
     public String asrlanguage = LanguageCode.ASRLanguageCode.CHINESE; //语种，目前支持普通话
+    public String mtTargetLanguage = LanguageCode.ASRLanguageCode.ENGLISH; //语种，目前支持普通话
+    public String mtFromLanguage = LanguageCode.ASRLanguageCode.CHINESE;
     public int packageSize = SpeechConstants.LENGTH_200MS_SHORT;
     public String model = "default";
 
@@ -50,6 +52,9 @@ public class SogoSpeechSettings {
     public String vadDataPath = null;
     public String speexDataPath = null;
     public String requestDataPath = null; //保存上传到语音服务的音频数据
+
+    //在线翻译相关参数
+    private boolean isEnableOnlineTranslate = true;
 
 
     private static volatile SogoSpeechSettings ourInstance = null;
@@ -105,6 +110,10 @@ public class SogoSpeechSettings {
                         break;
                     case SpeechConstants.Parameter.ASR_ONLINE_LANGUAGE_STRING:
                         asrlanguage = (String) parameterValue;
+                        mtFromLanguage = (String) parameterValue;
+                        break;
+                    case SpeechConstants.Parameter.TRANSLATION_LANGUAGE_STRING:
+                        mtTargetLanguage = (String) parameterValue;
                         break;
                     case SpeechConstants.Parameter.ASR_ONLINE_ENABLE_DEBUG_LOG_BOOLEAN:
                         enableLog = (boolean) parameterValue;
@@ -135,6 +144,9 @@ public class SogoSpeechSettings {
                         break;
                     case SpeechConstants.Parameter.WAKEUP_KEYWORD_PATH:
                         keywordsPath = (String) parameterValue;
+                        break;
+                    case SpeechConstants.Parameter.TRANSLATION_FROM_LANGUAGE:
+                        mtFromLanguage = (String) parameterValue;
                         break;
                     default:
                         Log.e("SogoSpeech", "Parameter set error, there is no parameter name：" + parameterName);
@@ -167,6 +179,10 @@ public class SogoSpeechSettings {
             }
         }
         return ourInstance;
+    }
+
+    public boolean isEnableTranslate(){
+        return isEnableOnlineTranslate;
     }
 //
 //    @Override

@@ -11,9 +11,8 @@ import com.google.protobuf.ByteString;
 import com.sogou.sogocommon.ErrorIndex;
 import com.sogou.sogocommon.utils.CommonSharedPreference;
 import com.sogou.sogocommon.utils.HttpsUtil;
-import com.sogou.sogocommon.utils.ShortByteUtil;
-import com.sogou.sogocommon.utils.SogoConstants;
 import com.sogou.sogocommon.utils.LogUtil;
+import com.sogou.sogocommon.utils.ShortByteUtil;
 import com.sogou.sogouspeech.EventListener;
 import com.sogou.sogouspeech.SogoSpeech;
 import com.sogou.sogouspeech.paramconstants.SpeechConstants;
@@ -26,7 +25,6 @@ import com.sogou.speech.asr.v1.StreamingRecognitionResult;
 import com.sogou.speech.asr.v1.StreamingRecognizeRequest;
 import com.sogou.speech.asr.v1.StreamingRecognizeResponse;
 import com.sogou.speech.asr.v1.asrGrpc;
-
 
 import java.util.HashMap;
 
