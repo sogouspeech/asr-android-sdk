@@ -148,6 +148,9 @@ public class SogoSpeechSettings {
                     case SpeechConstants.Parameter.TRANSLATION_FROM_LANGUAGE:
                         mtFromLanguage = (String) parameterValue;
                         break;
+                    case SpeechConstants.Parameter.TRANSLATION_ENABLED:
+                        isEnableOnlineTranslate = (boolean) parameterValue;
+                        break;
                     default:
                         Log.e("SogoSpeech", "Parameter set error, there is no parameter name：" + parameterName);
                         break;
