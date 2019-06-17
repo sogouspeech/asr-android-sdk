@@ -54,7 +54,7 @@ public class SogoSpeechSettings {
     public String requestDataPath = null; //保存上传到语音服务的音频数据
 
     //在线翻译相关参数
-    private boolean isEnableOnlineTranslate = true;
+    private boolean isEnableOnlineTranslate = false;
 
 
     private static volatile SogoSpeechSettings ourInstance = null;
