@@ -12,7 +12,6 @@ import android.os.Message;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.sogou.sogocommon.ErrorIndex;
 import com.sogou.sogocommon.utils.CommonSharedPreference;
 import com.sogou.sogocommon.utils.FileUtils;
 import com.sogou.sogocommon.utils.LogUtil;
@@ -24,8 +23,6 @@ import com.sogou.sogouspeech.recognize.IAudioRecognizer;
 import com.sogou.sogouspeech.recognize.bean.SogoASRConfig;
 import com.sogou.sogouspeech.recognize.impl.OnlineRecognizer;
 import com.sogou.sogouspeech.recognize.impl.WakeupRecognizer;
-import com.sogou.sogouspeech.translate.ITranslatorInterface;
-import com.sogou.sogouspeech.translate.OnlineTranslator;
 import com.sogou.speech.asr.v1.RecognitionConfig;
 import com.sogou.speech.sogovad.ConfigurableParameterName;
 import com.sogou.speech.sogovad.IVadDetector;
@@ -41,12 +38,11 @@ import java.security.Security;
 import java.util.concurrent.atomic.AtomicReference;
 
 
-public class SogoSpeech implements InstructionsManager , VadDetectorCallback, EventListener, ITranslatorInterface.TransaltionCallback {
+public class SogoSpeech implements InstructionsManager , VadDetectorCallback, EventListener {
     private static final String TAG = SogoSpeech.class.getSimpleName();
     private IVadDetector mVadDetector = null;
     private SpeexEncoder mSpeexEncoder = null;
     private IAudioRecognizer mRecognizer = null;
-    private ITranslatorInterface onlineTranslator = null;
     private IAudioRecognizer mWakeupRecognizer = null;
     private SogoASRConfig.ASRSettings mAsrSettings = new SogoASRConfig.ASRSettings();
     private final AtomicReference<EventListener> mListener = new AtomicReference<>(null);
@@ -171,15 +167,6 @@ public class SogoSpeech implements InstructionsManager , VadDetectorCallback, Ev
                 }
                 mSogoSpeechHandler.obtainMessage(MSG_ON_WAKEUP_START).sendToTarget();
                 break;
-            case SpeechConstants.Command.TRANS_TEXT:
-                mSogoSpeechHandler.obtainMessage(MSG_TRANS_TEXT,paramString).sendToTarget();
-                break;
-            case SpeechConstants.Command.TRANS_INIT:
-                mSogoSpeechHandler.obtainMessage(MSG_TRANS_INIT,paramString).sendToTarget();
-                break;
-            case SpeechConstants.Command.TRANS_DESTROY:
-                mSogoSpeechHandler.obtainMessage(MSG_TRANS_DESTROY,paramString).sendToTarget();
-                break;
             default:
                 break;
         }
@@ -220,9 +207,6 @@ public class SogoSpeech implements InstructionsManager , VadDetectorCallback, Ev
             initWakeupRecognizer();
         }
 
-        if(SogoSpeechSettings.shareInstance().isEnableTranslate()){
-            initOnlineTranslator();
-        }
 
         mEngineStatus = ASR_ONLINE_ENGINE_STATUS.INITED;
         onEvent(SpeechConstants.Message.MSG_ASR_ONLINE_READY,"create success.",null,0,0, null);
@@ -256,23 +240,6 @@ public class SogoSpeech implements InstructionsManager , VadDetectorCallback, Ev
             LogUtil.e("audio code wrong");
         }
         mRecognizer.initListening(mAsrSettings);
-    }
-    private synchronized void initOnlineTranslator(){
-        if(onlineTranslator != null){
-            onlineTranslator = null;
-        }
-//        onlineTranslator = TranslateFactory.getInstance().getRecognizer(SogoSpeechSettings.shareInstance().translationMode,mContext,this);
-        onlineTranslator = new OnlineTranslator(mContext,this);
-        onlineTranslator.initTranslation(SogoSpeechSettings.shareInstance().mtFromLanguage, SogoSpeechSettings.shareInstance().mtTargetLanguage);
-    }
-
-
-    private synchronized boolean startOnlineTranslation(String text){
-        if(onlineTranslator == null){
-            return false;
-        }
-        onlineTranslator.startTranslation(text,SogoSpeechSettings.shareInstance().mtFromLanguage,SogoSpeechSettings.shareInstance().mtTargetLanguage);
-        return true;
     }
 
     private void startASROnline(Message msg){
@@ -503,15 +470,8 @@ public class SogoSpeech implements InstructionsManager , VadDetectorCallback, Ev
 
         mWakeupRecognizer = null;
         mEngineStatus = ASR_ONLINE_ENGINE_STATUS.TO_INIT;
-        transDestroy();
     }
 
-    private void transDestroy(){
-        if (onlineTranslator != null){
-            onlineTranslator.releaseTranslation();
-            onlineTranslator = null;
-        }
-    }
 
     private void handleEvent(String eventName, String param, byte[] data, int offset, int length,Object extra){
         if(mSettings.needWakeup && mSettings.needOneshot && TextUtils.equals(eventName,SpeechConstants.Message.MSG_WAKEUP_SUCC)){
@@ -520,16 +480,6 @@ public class SogoSpeech implements InstructionsManager , VadDetectorCallback, Ev
             short[] tempData = ShortByteUtil.byteArray2ShortArray(data);
             mSogoSpeechHandler.obtainMessage(MSG_ON_ASR_RECOGNIZE,offset,0, tempData).sendToTarget();
             tempData = null;
-        }
-        if(!TextUtils.isEmpty(param) && SogoSpeechSettings.shareInstance().isEnableTranslate()
-                && TextUtils.equals(eventName,SpeechConstants.Message.MSG_ASR_ONLINE_LAST_RESULT)){
-//            if(SogoSpeechSettings.shareInstance().isEnablePartTranslate || TextUtils.equals(eventName,SpeechConstants.Message.MSG_ASR_LAST_RESULT)) {
-                if (onlineTranslator != null) {
-                    onlineTranslator.startTranslation(param, SogoSpeechSettings.shareInstance().asrlanguage, SogoSpeechSettings.shareInstance().mtTargetLanguage);
-                } else {
-                    mListener.get().onError(SpeechConstants.ErrorDomain.ERR_TRANSLATION_UNINITED, ErrorIndex.ERROR_TRANSLATOR_NOT_WORK, "online translator is null", null);
-                }
-//            }
         }
         if(mListener!=null && mListener.get()!=null){
             mListener.get().onEvent(eventName,param,data,offset,length,extra);
@@ -607,15 +557,6 @@ public class SogoSpeech implements InstructionsManager , VadDetectorCallback, Ev
                     instance.handleError(SpeechConstants.ErrorDomain.ERR_ASR_ONLINE_PREPROCESS,code,msgStr,null);
                 }
                 break;
-            case MSG_TRANS_TEXT:
-                instance.startOnlineTranslation((String) msg.obj);
-                break;
-            case MSG_TRANS_INIT:
-                instance.initOnlineTranslator();
-                break;
-            case MSG_TRANS_DESTROY:
-                instance.transDestroy();
-                break;
             default:
                 break;
         }
@@ -684,22 +625,6 @@ public class SogoSpeech implements InstructionsManager , VadDetectorCallback, Ev
 //================================================================================
 
     //onlineTranslatorCallback
-
-
-    @Override
-    public void onTranslationResultCb(boolean sentenceFinal, String origintext, String resultText, int sessionIndex, int sessionID) {
-        onEvent(SpeechConstants.Message.MSG_TRANSLATION_RESULT,resultText,origintext.getBytes(),0,0,null);
-    }
-
-    @Override
-    public void onTranslationErrorCb(String errInfo, int sessionID) {
-        onError(SpeechConstants.ErrorDomain.ERR_TRANSLATION_SERVER_ERROR, ErrorIndex.ERROR_TRANSLATOR_SERVER_RESPONE_NOT_SUCCESS,errInfo,sessionID);
-    }
-
-    @Override
-    public void onTranslationInit() {
-        onEvent(SpeechConstants.Message.MSG_TRANSLATION_INIT_SUCCESS,"",null,0,0,null);
-    }
 
 
     public static String sBaseUrl = "";

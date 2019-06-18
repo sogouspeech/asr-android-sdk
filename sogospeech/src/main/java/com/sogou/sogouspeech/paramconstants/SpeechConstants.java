@@ -56,12 +56,6 @@ public class SpeechConstants {
         String ERR_WAKEUP_INIT_KWS = "error.wakeup.init.kws";
         String ERR_WAKEUP_NOT_INIT = "error.wakeup.init.not";
 
-        /**
-         *
-         *
-         */
-        String ERR_TRANSLATION_UNINITED = "error.translation.online.not.inited";
-        String ERR_TRANSLATION_SERVER_ERROR = "error.translation.online.server.error";
 
         /**
          * 其他功能
@@ -109,11 +103,6 @@ public class SpeechConstants {
         String MSG_WAKEUP_INIT_SUCC = "wakeup.init.success";
         String MSG_WAKEUP_SUCC = "wakeup.success";
 
-        /**
-         * 在线翻译相关
-         */
-        String MSG_TRANSLATION_RESULT = "translation.online.result";
-        String MSG_TRANSLATION_INIT_SUCCESS = "translation.init";
 
         /**
          * 其他功能
@@ -153,9 +142,6 @@ public class SpeechConstants {
          * 其他功能
          * ...
          */
-        String TRANS_TEXT = "trans.text";
-        String TRANS_INIT = "trans.init";
-        String TRANS_DESTROY = "trans.destroy";
     }
 
 
@@ -246,17 +232,5 @@ public class SpeechConstants {
         String ASR_ONLINE_DEBUG_SAVE_REQUEST_DATA_PATH = "asr.online.save.requestdata";
 
 
-        /**
-         *
-         */
-        /**
-         *
-         */
-        String TRANSLATION_ENABLED = "mt.online.enable";
-        String TRANSLATION_PARTRESULT_ENABLED = "mt.online.partresult.enable";
-        String TRANSLATION_LANGUAGE_STRING = "mt.online.to.language";
-        String TRANSLATION_MODE = "mt.mode";
-        String TRANSLATION_MODEL_POSITION = "mt.model.position";
-        String TRANSLATION_FROM_LANGUAGE = "mt.online.from.language";
     }
 }
