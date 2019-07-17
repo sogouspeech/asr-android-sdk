@@ -9,5 +9,8 @@ public final class LanguageCode {
         public static final String ENGLISH = "en-US";
         public static final String KOREAN = "ko-KR";
         public static final String JAPANESE = "ja-JP";
+        public static final String RUSSIAN = "ru-RU";
+        public static final String SPANISH = "es-ES";
+        public static final String FRENCH = "fr-FR";
     }
 }
