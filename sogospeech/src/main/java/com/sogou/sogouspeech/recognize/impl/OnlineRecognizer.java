@@ -40,6 +40,7 @@ public class OnlineRecognizer extends IAudioRecognizer {
     private EventListener mListener = null;
     private asrGrpc.asrStub client;
     private StreamObserver<StreamingRecognizeRequest> mRequestObserver;
+    private ManagedChannel channel = null;
     private Context mContext = null;
 
 
@@ -116,7 +117,8 @@ public class OnlineRecognizer extends IAudioRecognizer {
         headerParams.put("uuid", CommonSharedPreference.getInstance(mContext).getString("uuid",""));
 
         Log.d(TAG, "create rpc client : " + mAsrSettings);
-        final ManagedChannel channel = new OkHttpChannelProvider()
+        channel = null;
+        channel = new OkHttpChannelProvider()
                 .builderForAddress(SogoSpeech.sBaseUrl,
                         443)
                 .overrideAuthority(SogoSpeech.sBaseUrl
@@ -125,6 +127,7 @@ public class OnlineRecognizer extends IAudioRecognizer {
                 .sslSocketFactory(HttpsUtil.getSSLSocketFactory(null, null, null))
                 .intercept(new HeaderClientInterceptor(headerParams))
                 .build();
+        client = null;
         client = asrGrpc.newStub(channel);
 
 //        headerParams.clear();
