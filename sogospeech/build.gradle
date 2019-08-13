@@ -65,7 +65,7 @@ allprojects {
 
 
 ext {
-    grpcVersion = '1.8.0'
+    grpcVersion = '1.22.1'
 }
 
 //ref:https://developer.android.com/studio/build/dependencies
@@ -85,11 +85,6 @@ dependencies {
     }
     compile("io.grpc:grpc-okhttp:${grpcVersion}") {
         exclude module: 'jsr305'
-    }
-    // OAuth2 for Google API
-    compile('com.google.auth:google-auth-library-oauth2-http:0.9.0') {
-        exclude module: 'jsr305'
-        exclude module: 'httpclient'
     }
 //    compile project(':sogocommon')
 //    compile 'org.conscrypt:conscrypt-android:1.2.0'
