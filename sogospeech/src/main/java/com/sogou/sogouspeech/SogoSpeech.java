@@ -374,7 +374,7 @@ public class SogoSpeech implements InstructionsManager , VadDetectorCallback, Ev
                     LogUtil.d(TAG, "recognizer.feedShortData ");
                     if (mSettings.requestDataPath != null){
                         byte[] temp = ShortByteUtil.shortArray2ByteArray(part);
-                        FileUtils.writeByteArray2SDCard(mSettings.vadDataPath, mTimeStamp + "_data.pcm" , temp,true);
+                        FileUtils.writeByteArray2SDCard(mSettings.requestDataPath, mTimeStamp + "_data.pcm" , temp,true);
                         temp = null;
                     }
                     mRecognizer.feedShortData(packageID,part);
@@ -383,7 +383,7 @@ public class SogoSpeech implements InstructionsManager , VadDetectorCallback, Ev
                     LogUtil.d(TAG, "recognizer.speex.feedShortData ");
                     byte[] bytes = mSpeexEncoder.encode(part);
                     if (mSettings.speexDataPath != null){
-                        FileUtils.writeByteArray2SDCard(mSettings.vadDataPath, mTimeStamp + ".spx" , bytes,true);
+                        FileUtils.writeByteArray2SDCard(mSettings.speexDataPath, mTimeStamp + ".spx" , bytes,true);
                     }
                     mRecognizer.feedByteData(packageID,bytes);
                     bytes = null;
