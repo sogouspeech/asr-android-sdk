@@ -330,13 +330,17 @@ public class SogoSpeech implements InstructionsManager , VadDetectorCallback, Ev
     }
 
     private void rawAudioPreprocess(int sn , short[] rawVoiceData){
-        if (sn < 0){
+//        if (sn < 0){
+//            mEngineStatus = ASR_ONLINE_ENGINE_STATUS.STOP;
+//            resizeShortAudioData(rawVoiceData,rawVoiceData.length,sn,true);
+//        }
+//        else {
+//            mVadDetector.detect(rawVoiceData, sn, null);
+//        }
+        if(sn<0){
             mEngineStatus = ASR_ONLINE_ENGINE_STATUS.STOP;
-            resizeShortAudioData(rawVoiceData,rawVoiceData.length,sn,true);
         }
-        else {
-            mVadDetector.detect(rawVoiceData, sn, null);
-        }
+        mVadDetector.detect(rawVoiceData, sn, null);
     }
 
     /**
@@ -603,6 +607,9 @@ public class SogoSpeech implements InstructionsManager , VadDetectorCallback, Ev
         }
         else {
             LogUtil.d(TAG,"isValid:"+isValid+ " sn:"+sn+" start:"+start+" end:"+end);
+            if(!isValid && sn <0){
+                handleError(SpeechConstants.ErrorDomain.ERR_ASR_ONLINE_PREPROCESS,VadTip.ERROR_VAD_SPEECH_TIMEOUT.code,VadTip.ERROR_VAD_SPEECH_TIMEOUT.msg,null);
+            }
         }
     }
 // Vad listener
