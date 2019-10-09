@@ -9,7 +9,9 @@ import android.util.Log;
 import com.sogou.sogouspeech.paramconstants.LanguageCode;
 import com.sogou.sogouspeech.paramconstants.SpeechConstants;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * Created by marxma on 2018/6/1.
@@ -56,6 +58,8 @@ public class SogoSpeechSettings {
 
 
     private static volatile SogoSpeechSettings ourInstance = null;
+
+    public ArrayList<ArrayList<String>> asrSpeechContexts = null;
 
     public static SogoSpeechSettings shareInstance() {
         if (ourInstance == null) {
@@ -138,6 +142,9 @@ public class SogoSpeechSettings {
                         break;
                     case SpeechConstants.Parameter.WAKEUP_KEYWORD_PATH:
                         keywordsPath = (String) parameterValue;
+                        break;
+                    case SpeechConstants.Parameter.ASR_SPEECH_CONTEXTS:
+                        asrSpeechContexts = (ArrayList<ArrayList<String>>) parameterValue;
                         break;
                     default:
                         Log.e("SogoSpeech", "Parameter set error, there is no parameter name：" + parameterName);

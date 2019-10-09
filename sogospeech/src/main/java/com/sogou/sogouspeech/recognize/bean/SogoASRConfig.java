@@ -5,6 +5,10 @@ package com.sogou.sogouspeech.recognize.bean;
 
 import com.sogou.speech.asr.v1.RecognitionConfig;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
 public class SogoASRConfig {
 
     public static class SogoSettings{
@@ -18,6 +22,8 @@ public class SogoASRConfig {
         private RecognitionConfig.AudioEncoding audioEncoding = RecognitionConfig.AudioEncoding.LINEAR16;
         private String model;
 //        private int asrMode;
+
+        private ArrayList<ArrayList<String>> speechContext = null;
 
         public String getToken() {
             return token;
@@ -74,6 +80,15 @@ public class SogoASRConfig {
         public void setAudioEncoding(RecognitionConfig.AudioEncoding audioEncoding) {
             this.audioEncoding = audioEncoding;
         }
+
+        public void setSpeechContext(ArrayList<ArrayList<String>> context){
+            this.speechContext = null;
+            this.speechContext = context;
+        }
+        public ArrayList<ArrayList<String>> getSpeechContext(){
+            return speechContext;
+        }
+
 
         @Override
         public String toString() {

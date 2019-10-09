@@ -203,6 +203,7 @@ public class SpeechConstants {
         String ASR_ONLINE_SEND_PACK_LEN_INT = "asr.online.pack.length";
         String ASR_ONLINE_MODEL = "asr.online.model";
 
+        String ASR_SPEECH_CONTEXTS = "asr.speech.contexts";
 
         /**
          * WAKEUP_IS_NEEDED:是否需要唤醒功能

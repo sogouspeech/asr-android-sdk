@@ -19,6 +19,7 @@ import com.sogou.sogouspeech.paramconstants.SpeechConstants;
 import com.sogou.sogouspeech.recognize.IAudioRecognizer;
 import com.sogou.sogouspeech.recognize.bean.SogoASRConfig;
 import com.sogou.speech.asr.v1.RecognitionConfig;
+import com.sogou.speech.asr.v1.SpeechContext;
 import com.sogou.speech.asr.v1.SpeechRecognitionAlternative;
 import com.sogou.speech.asr.v1.StreamingRecognitionConfig;
 import com.sogou.speech.asr.v1.StreamingRecognitionResult;
@@ -26,7 +27,9 @@ import com.sogou.speech.asr.v1.StreamingRecognizeRequest;
 import com.sogou.speech.asr.v1.StreamingRecognizeResponse;
 import com.sogou.speech.asr.v1.asrGrpc;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 import io.grpc.ManagedChannel;
 import io.grpc.okhttp.NegotiationType;
@@ -147,6 +150,20 @@ public class OnlineRecognizer extends IAudioRecognizer {
             }
             return;
         }
+
+        SpeechContext.Builder context = SpeechContext.newBuilder();
+        ArrayList<ArrayList<String>> speechContext = mAsrSettings.getSpeechContext();
+        if(speechContext!=null){
+            for (int i = 0; i < speechContext.size(); i++) {
+                if(speechContext.get(i) != null && speechContext.get(i).size()>0) {
+                    context.addAllPhrases(speechContext.get(i));
+                }
+            }
+        }
+
+        ArrayList<SpeechContext> speechContexts = new ArrayList<>();
+        speechContexts.add(context.build());
+
         mRequestObserver = client.streamingRecognize(mResponseObserver);
         mRequestObserver.onNext(StreamingRecognizeRequest.newBuilder()
                 .setStreamingConfig(StreamingRecognitionConfig.newBuilder()
@@ -159,6 +176,7 @@ public class OnlineRecognizer extends IAudioRecognizer {
                                 .setProfanityFilter(true)
                                 .setDisableAutomaticPunctuation(false)
                                 .setModel(mAsrSettings.getModel())
+                                .addAllSpeechContexts(speechContexts)
                                 .setEnableWordTimeOffsets(true)
                                 .build())
                         .setInterimResults(true)
