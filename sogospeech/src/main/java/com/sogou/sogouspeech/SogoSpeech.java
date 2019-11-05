@@ -72,7 +72,6 @@ public class SogoSpeech implements InstructionsManager , VadDetectorCallback, Ev
 
     private static final int MSG_SPECIAL_USE = 999;
 
-    //TODO 后面下面两个变量要改成用户可设置的
     //是否需要唤醒功能
 //    private boolean needWakeup = false;
 //    在需要唤醒的基础上，是否需要oneshot功能
