@@ -188,6 +188,22 @@ public class SpeechConstants {
          *
          * ASR_ONLINE_MODEL:
          *      分环境设置：包括通用、地图导航类、搜索(search)等。
+         *
+         * ASR_SPEECH_CONTEXTS:
+         *      自定义热词，能够提升这些词在本次识别中的得分权重，更容易识别出这些词。
+         *
+         * ASR_PROFANITY_FILTER_BOOLEAN:
+         *      敏感词过滤开关。
+         *
+         * ASR_DISABLE_AUTOMATIC_PUNCTUATION_BOOLEAN:
+         *      禁用自动标点开关。
+         *
+         * ASR_ENABLE_WORD_TIMEOFFSETS_BOOLEAN:
+         *      识别内容位置信息开关。
+         *
+         * ASR_MAX_ALTERNATIVES_INT:
+         *      候选项最大数目。
+         *
          */
 
         String ASR_ONLINE_VAD_ENABLE_BOOLEAN = "asr.online.vad.enable";
@@ -204,6 +220,11 @@ public class SpeechConstants {
         String ASR_ONLINE_MODEL = "asr.online.model";
 
         String ASR_SPEECH_CONTEXTS = "asr.speech.contexts";
+
+        String ASR_PROFANITY_FILTER_BOOLEAN = "asr.profanity.filter";
+        String ASR_DISABLE_AUTOMATIC_PUNCTUATION_BOOLEAN = "asr.disable.automatic.punc";
+        String ASR_ENABLE_WORD_TIMEOFFSETS_BOOLEAN = "asr.enable.wordtimeoffset";
+        String ASR_MAX_ALTERNATIVES_INT = "asr.max.alternatives";
 
         /**
          * WAKEUP_IS_NEEDED:是否需要唤醒功能

@@ -61,6 +61,11 @@ public class SogoSpeechSettings {
 
     public ArrayList<ArrayList<String>> asrSpeechContexts = null;
 
+    public boolean asrProfanityFilter = true;
+    public boolean asrDisableAutomaticPunctuation = false;
+    public boolean asrEnableWordTimeOffsets = true;
+    public int asrMaxAlternatives = 1;
+
     public static SogoSpeechSettings shareInstance() {
         if (ourInstance == null) {
             synchronized (SogoSpeechSettings.class) {
@@ -145,6 +150,18 @@ public class SogoSpeechSettings {
                         break;
                     case SpeechConstants.Parameter.ASR_SPEECH_CONTEXTS:
                         asrSpeechContexts = (ArrayList<ArrayList<String>>) parameterValue;
+                        break;
+                    case SpeechConstants.Parameter.ASR_PROFANITY_FILTER_BOOLEAN:
+                        asrProfanityFilter = (boolean>) parameterValue;
+                        break;
+                    case SpeechConstants.Parameter.ASR_DISABLE_AUTOMATIC_PUNCTUATION_BOOLEAN:
+                        asrDisableAutomaticPunctuation = (boolean>) parameterValue;
+                        break;
+                    case SpeechConstants.Parameter.ASR_ENABLE_WORD_TIMEOFFSETS_BOOLEAN:
+                        asrEnableWordTimeOffsets = (boolean>) parameterValue;
+                        break;
+                    case SpeechConstants.Parameter.ASR_MAX_ALTERNATIVES_INT:
+                        asrMaxAlternatives = (int) parameterValue;
                         break;
                     default:
                         Log.e("SogoSpeech", "Parameter set error, there is no parameter name：" + parameterName);

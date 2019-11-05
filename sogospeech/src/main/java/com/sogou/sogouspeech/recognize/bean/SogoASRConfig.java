@@ -22,6 +22,10 @@ public class SogoASRConfig {
         private RecognitionConfig.AudioEncoding audioEncoding = RecognitionConfig.AudioEncoding.LINEAR16;
         private String model;
 //        private int asrMode;
+        private boolean profanityFilter = true;
+        private boolean disableAutomaticPunctuation = false;
+        private boolean enableWordTimeOffsets = true;
+        private int maxAlternatives = 1;
 
         private ArrayList<ArrayList<String>> speechContext = null;
 
@@ -87,6 +91,39 @@ public class SogoASRConfig {
         }
         public ArrayList<ArrayList<String>> getSpeechContext(){
             return speechContext;
+        }
+
+
+        public boolean getProfanityFilter() {
+            return profanityFilter;
+        }
+
+        public void setProfanityFilter(boolean _profanityFilter) {
+            this.profanityFilter = _profanityFilter;
+        }
+
+        public boolean getDisableAutomaticPunctuation() {
+            return disableAutomaticPunctuation;
+        }
+
+        public void setDisableAutomaticPunctuation(boolean _disableAutomaticPunctuation) {
+            this.disableAutomaticPunctuation = _disableAutomaticPunctuation;
+        }
+
+        public boolean getEnableWordTimeOffsets() {
+            return enableWordTimeOffsets;
+        }
+
+        public void setEnableWordTimeOffsets(boolean _enableWordTimeOffsets) {
+            this.enableWordTimeOffsets = _enableWordTimeOffsets;
+        }
+
+        public int getMaxAlternatives() {
+            return maxAlternatives;
+        }
+
+        public void setMaxAlternatives(int _maxAlternatives) {
+            this.maxAlternatives = _maxAlternatives;
         }
 
 
