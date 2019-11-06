@@ -152,13 +152,13 @@ public class SogoSpeechSettings {
                         asrSpeechContexts = (ArrayList<ArrayList<String>>) parameterValue;
                         break;
                     case SpeechConstants.Parameter.ASR_PROFANITY_FILTER_BOOLEAN:
-                        asrProfanityFilter = (boolean>) parameterValue;
+                        asrProfanityFilter = (boolean) parameterValue;
                         break;
                     case SpeechConstants.Parameter.ASR_DISABLE_AUTOMATIC_PUNCTUATION_BOOLEAN:
-                        asrDisableAutomaticPunctuation = (boolean>) parameterValue;
+                        asrDisableAutomaticPunctuation = (boolean) parameterValue;
                         break;
                     case SpeechConstants.Parameter.ASR_ENABLE_WORD_TIMEOFFSETS_BOOLEAN:
-                        asrEnableWordTimeOffsets = (boolean>) parameterValue;
+                        asrEnableWordTimeOffsets = (boolean) parameterValue;
                         break;
                     case SpeechConstants.Parameter.ASR_MAX_ALTERNATIVES_INT:
                         asrMaxAlternatives = (int) parameterValue;

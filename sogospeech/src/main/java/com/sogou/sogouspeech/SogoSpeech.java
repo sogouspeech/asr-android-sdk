@@ -233,10 +233,10 @@ public class SogoSpeech implements InstructionsManager , VadDetectorCallback, Ev
         mAsrSettings.setLanguageCode(mSettings.asrlanguage);
         mAsrSettings.setModel(mSettings.model);
         mAsrSettings.setSpeechContext(mSettings.asrSpeechContexts);
-        mAsrSettings.setProfanityFilter(mSettings.);
-        mAsrSettings.setDisableAutomaticPunctuation(mSettings.)
-        mAsrSettings.setEnableWordTimeOffsets(mSettings.)
-        mAsrSettings.setMaxAlternatives(mSettings.)
+        mAsrSettings.setProfanityFilter(mSettings.asrProfanityFilter);
+        mAsrSettings.setDisableAutomaticPunctuation(mSettings.asrDisableAutomaticPunctuation);
+        mAsrSettings.setEnableWordTimeOffsets(mSettings.asrEnableWordTimeOffsets);
+        mAsrSettings.setMaxAlternatives(mSettings.asrMaxAlternatives);
         if (mSettings.audioCoding == RecognitionConfig.AudioEncoding.SOGOU_SPEEX_VALUE){
             mAsrSettings.setAudioEncoding(RecognitionConfig.AudioEncoding.SOGOU_SPEEX);
         }else if (mSettings.audioCoding == RecognitionConfig.AudioEncoding.LINEAR16_VALUE){
