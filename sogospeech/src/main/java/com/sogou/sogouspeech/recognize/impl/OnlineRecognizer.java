@@ -179,7 +179,6 @@ public class OnlineRecognizer extends IAudioRecognizer {
                                 .setEnableWordTimeOffsets(mAsrSettings.getEnableWordTimeOffsets())
                                 .build())
                         .setInterimResults(true)
-                        .setSingleUtterance(true)
                         .build())
                 .build());
         Log.d(TAG, "build rpc connection : " + mAsrSettings);
